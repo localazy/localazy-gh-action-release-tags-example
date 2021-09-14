@@ -1,0 +1,17 @@
+name: Localazy
+on: 
+  push:
+    branches: [ main, develop ]
+jobs:
+  release-tag:
+    name: Download release tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: localazy/download@v1
+        with:
+          release_tag: ${{ github.ref == 'refs/heads/main' && 'production' || 'staging' }}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: locales
+          path: src/locales/*
